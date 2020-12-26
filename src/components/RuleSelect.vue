@@ -2,7 +2,9 @@
   <div>
     <div v-if="isSelected">
       <span id="selectedRule" @click="onSelect(selectedRule)">{{
-        selectedRule.filled ? selectedRule.filled : selectedRule.name
+        selectedRule.filled
+          ? selectedRule.filled.left + "&rarr;" + selectedRule.filled.right
+          : selectedRule.left + "&rarr;" + selectedRule.right
       }}</span>
     </div>
     <div class="scrolldown" v-else>
@@ -11,7 +13,11 @@
         :key="index"
         :id="'rule_' + index"
         @click="onSelect(optRule)"
-        >{{ optRule.filled ? optRule.filled : optRule.name }}</span
+        >{{
+          optRule.filled
+            ? optRule.filled.left + "&rarr;" + optRule.filled.right
+            : optRule.left + "&rarr;" + optRule.right
+        }}</span
       >
     </div>
     <div v-for="(varName, index) in selectedRule.vars" :key="index">
@@ -53,7 +59,7 @@ export default {
     return {
       selectedRule: this.rule,
       hasChanged: false,
-      isSelected: true,
+      isSelected: false,
     };
   },
   computed: {
@@ -72,7 +78,6 @@ export default {
       if (this.isSelected) {
         this.isSelected = false;
       } else {
-        //console.log("onSelect: ", selRule);
         // copy selected rule
         this.selectedRule = JSON.parse(JSON.stringify(selRule));
         this.isSelected = true;
@@ -82,15 +87,19 @@ export default {
     onSave() {
       if (!this.selectedRule.vars) return;
       this.selectedRule = fillRule(this.selectedRule);
-      // console.log("onSave", this.selectedRule);
+      console.log("onSave", this.selectedRule);
       // console.log("onSave: hasChanged", this.hasChanged);
       if (this.hasChanged) {
         this.hasChanged = false;
         this.$emit("itemedited", this.selectedRule);
+        this.gFocusMQobj.clear();
+        this.gFocusMQref.value = {};
       }
     },
     onCancel() {
       this.$emit("editcancelled");
+      this.gFocusMQobj.clear();
+      this.gFocusMQref.value = {};
     },
   },
   mounted: function () {
@@ -113,19 +122,23 @@ function initRules(initRule, arrRules) {
 }
 function compressRules(arrRules) {
   arrRules.forEach((item, index, arr) => {
-    arr[index].name = item.name.replace(/\s+/g, "");
+    arr[index].left = item.left.replace(/\s+/g, "");
+    arr[index].right = item.right.replace(/\s+/g, "");
   });
   return arrRules;
 }
 function fillRule(selectedRule) {
   //console.log("fillRule: ", selectedRule);
-  let filled = selectedRule.name;
+  let filled = {};
+  filled.left = selectedRule.left;
+  filled.right = selectedRule.right;
   let rx;
   for (let v of selectedRule.vars) {
     if (selectedRule[v]) {
       //console.log("fillRule: ", v, ":", selectedRule[v]);
       rx = new RegExp(v, "g");
-      filled = filled.replace(rx, selectedRule[v]);
+      filled.left = filled.left.replace(rx, selectedRule[v]);
+      filled.right = filled.right.replace(rx, selectedRule[v]);
     }
   }
   selectedRule.filled = filled;

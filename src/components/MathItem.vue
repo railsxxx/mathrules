@@ -4,7 +4,11 @@
   </div>
   <div class="stack-small" v-if="!isEditing">
     <div :id="editRule" class="checkbox-label">
-      {{ rule.filled ? rule.filled : rule.name }}
+      {{
+        rule.filled
+          ? rule.filled.left + "&rarr;" + rule.filled.right
+          : rule.left + "&rarr;" + rule.right
+      }}
     </div>
     <div class="btn-group" v-if="isLast">
       <button type="button" class="btn btn__danger" @click="deleteStep">
@@ -17,7 +21,7 @@
         ref="editButton"
         @click="toggleToRuleSelect"
       >
-        Edit
+        Select
       </button>
     </div>
   </div>
@@ -62,9 +66,10 @@ export default {
   },
   methods: {
     rewriteMath() {
+      console.log("rewriteMath: rule: ", this.rule);
       if (!this.rule.filled) return;
       this.newMath = matchRule(this.math, this.rule.filled);
-      // console.log("applyRule: this.newMath: ", this.newMath);
+      // console.log("rewriteMath: this.newMath: ", this.newMath);
       this.$emit("ruleapplied", this.newMath);
     },
     deleteStep() {
@@ -117,10 +122,10 @@ export default {
     MQ.StaticMath(el);
   },
 };
-function matchRule(math, rule) {
-  const sides = rule.split("->");
-  if (sides.length < 2) return;
-  const newMath = math.replace(sides[0], sides[1]);
+function matchRule(math, ruleFilled) {
+  console.log("matchRule: rule:", ruleFilled);
+  if (!ruleFilled.left || !ruleFilled.right) return;
+  const newMath = math.replace(ruleFilled.left, ruleFilled.right);
   return newMath;
 }
 </script>

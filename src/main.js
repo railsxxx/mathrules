@@ -12,22 +12,4 @@ app.config.globalProperties.gClipboard = "clip";
 app.config.globalProperties.gFocusMQref = ref({});
 app.config.globalProperties.gFocusMQobj = focusMQ();
 
-// (function () {
-//   let mq = undefined;
-//   return {
-//     set: function (mqn) {
-//       // console.log("clicked: ", mqn);
-//       if (mq) mq.blur();
-//       mq = mqn;
-//     },
-//     get: function () {
-//       return mq;
-//     },
-//     clear: function () {
-//       if (mq) mq.blur();
-//       mq = undefined;
-//     }
-//   };
-// })();
-
 app.mount("#app");

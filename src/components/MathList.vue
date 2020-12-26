@@ -53,8 +53,8 @@ export default {
       return Object.entries(this.gFocusMQref.value).length > 0;
     },
     MQMathField() {
-      console.log("computed gFocusMQobj.get(): ", this.gFocusMQobj.get());
-      console.log("computed gFocusMQref.value: ", this.gFocusMQref.value);
+      // console.log("computed gFocusMQobj.get(): ", this.gFocusMQobj.get());
+      // console.log("computed gFocusMQref.value: ", this.gFocusMQref.value);
       return this.gFocusMQref.value;
     },
   },
@@ -67,7 +67,7 @@ export default {
       this.MathItems.push({
         id: uniqueId("item-"),
         label: math,
-        rule: { name: "editRule" },
+        rule: { left: "selectRule", right: "" },
       });
       setLast(this.MathItems);
     },
