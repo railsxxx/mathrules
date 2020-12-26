@@ -1,0 +1,15 @@
+[
+  { "name": "(a^n)^m -> a^{n*m}", "vars": ["a", "n", "m"] },
+  { "name": "(a + b) * c -> a * c + b * c", "vars": ["a", "b", "c"] },
+  { "name": "a + b -> c", "vars": ["a", "b", "c"] },
+  { "name": "a * b -> c", "vars": ["a", "b", "c"] },
+  { "name": "a + b -> b + a", "vars": ["a", "b"] },
+  {
+    "name": "ax^2 + bx + c = 0->x_{1,2}=\\frac{ -b \\pm \\sqrt{b^2-4ac} }{ 2a }",
+    "vars": ["a", "b", "c"]
+  },
+  {
+    "name": "x^2 + px + q = 0->x_{1,2}=\\frac{ -p}{2} \\pm \\sqrt{(\\frac{p}{2})^2-q}",
+    "vars": ["p", "q"]
+  }
+]
