@@ -83,25 +83,30 @@ export default {
   },
   methods: {
     onCmd(latexCmd) {
-      if (!this.mqmathfield) return;
+      if (!this.mqmathfield || !(this.mqmathfield instanceof MQ.MathField))
+        return;
       this.mqmathfield.cmd(latexCmd);
     },
     onWrite(latexWrite) {
-      if (!this.mqmathfield) return;
+      if (!this.mqmathfield || !(this.mqmathfield instanceof MQ.MathField))
+        return;
       this.mqmathfield.write(latexWrite);
     },
     onKey(keyString) {
-      if (!this.mqmathfield) return;
+      if (!this.mqmathfield || !(this.mqmathfield instanceof MQ.MathField))
+        return;
       this.mqmathfield.keystroke(keyString);
     },
     onFrac() {
-      if (!this.mqmathfield) return;
+      if (!this.mqmathfield || !(this.mqmathfield instanceof MQ.MathField))
+        return;
       const sel = this.mqmathfield.__controller.textarea.val();
       if (!sel) this.mqmathfield.keystroke("Shift-Left");
       this.mqmathfield.cmd("\\frac");
     },
     onDelete() {
-      if (!this.mqmathfield) return;
+      if (!this.mqmathfield || !(this.mqmathfield instanceof MQ.MathField))
+        return;
       const sel = this.mqmathfield.__controller.textarea.val();
       if (!sel) this.mqmathfield.keystroke("Shift-Left");
       this.mqmathfield.keystroke("Del");
@@ -116,7 +121,8 @@ export default {
       }
     },
     onCut() {
-      if (!this.mqmathfield) return;
+      if (!this.mqmathfield || !(this.mqmathfield instanceof MQ.MathField))
+        return;
       const ctrlr = this.mqmathfield.__controller;
       const text = ctrlr.textarea.val();
       ctrlr.textarea.val("");
@@ -126,7 +132,8 @@ export default {
       }
     },
     onPaste() {
-      if (!this.mqmathfield) return;
+      if (!this.mqmathfield || !(this.mqmathfield instanceof MQ.MathField))
+        return;
       const ctrlr = this.mqmathfield.__controller;
       const text = this.gClipboard;
       if (text !== "") {

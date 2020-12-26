@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p :id="editMath">{{ math }}</p>
+    <p :id="staticMathId" @click="onStaticMathClick">{{ math }}</p>
   </div>
   <div class="stack-small" v-if="!isEditing">
     <div :id="editRule" class="checkbox-label">
@@ -49,11 +49,12 @@ export default {
       isEditing: false,
       isLast: this.last,
       newMath: this.math,
+      staticMathMQ: {},
     };
   },
   computed: {
-    editMath() {
-      return "edit-math-" + this.id;
+    staticMathId() {
+      return "static-math-" + this.id;
     },
     editRule() {
       return "edit-rule-" + this.id;
@@ -90,6 +91,15 @@ export default {
         editButtonRef.focus();
       });
     },
+    onStaticMathClick() {
+      this.gFocusMQobj.set(this.staticMathMQ);
+      console.log("onStaticMathClick: gFocusMQobj: ", this.gFocusMQobj.get());
+      this.gFocusMQref.value = this.staticMathMQ;
+      console.log(
+        "onStaticMathClick: gFocusMQref.value: ",
+        this.gFocusMQref.value
+      );
+    },
   },
   watch: {
     last: function (newVal, oldVal) {
@@ -97,8 +107,8 @@ export default {
     },
   },
   mounted() {
-    let el = document.getElementById(this.editMath);
-    MQ.StaticMath(el);
+    let el = document.getElementById(this.staticMathId);
+    this.staticMathMQ = MQ.StaticMath(el);
     el = document.getElementById(this.editRule);
     MQ.StaticMath(el);
   },
