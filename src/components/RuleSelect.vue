@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div v-if="isAdding">
+    <rule-add></rule-add>
+  </div>
+  <div v-else>
     <div v-if="isSelected">
       <span id="selectedRule" @click="onSelect(selectedRule)">{{
         selectedRule.filled
@@ -8,6 +11,7 @@
       }}</span>
     </div>
     <div class="scrolldown" v-else>
+      <span>click a rule to select / Add for new rules</span>
       <span
         v-for="(optRule, index) in rules"
         :key="index"
@@ -28,27 +32,27 @@
         @varedited="onVarEdited"
       ></rule-var-edit>
     </div>
-  </div>
-  <div class="btn-group">
-    <button type="button" class="btn" @click="onCancel">Cancel</button>
-    <button type="button" class="btn btn__primary" @click="onSave">Save</button>
-    <button
-      type="button"
-      class="btn btn__primary"
-      @click="onSelect(selectedRule)"
-    >
-      Select
-    </button>
+    <div class="btn-group">
+      <button type="button" class="btn" @click="onCancel">Cancel</button>
+      <button type="button" class="btn btn__primary" @click="isAdding = true">
+        Add
+      </button>
+      <button type="button" class="btn btn__primary" @click="onSave">
+        Save
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import RuleVarEditVue from "./RuleVarEdit.vue";
+import RuleAddVue from "./RuleAdd.vue";
 import rulesJSON from "/rules.json";
 let MQ = window.MQ;
 export default {
   components: {
     RuleVarEdit: RuleVarEditVue,
+    RuleAdd: RuleAddVue,
   },
   emits: ["editcancelled", "itemedited"],
   props: {
@@ -60,6 +64,7 @@ export default {
       selectedRule: this.rule,
       hasChanged: false,
       isSelected: false,
+      isAdding: false,
     };
   },
   computed: {
@@ -103,10 +108,6 @@ export default {
     },
   },
   mounted: function () {
-    // const labelSelectRef = this.$refs.labelSelect;
-    // labelSelectRef.focus();
-    // labelSelectRef.selectedIndex = 0;
-
     mqifyRules(this.rules, this.isSelected);
   },
   updated: function () {

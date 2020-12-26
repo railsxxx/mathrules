@@ -61,11 +61,11 @@ export default {
 <style scoped>
 span {
   display: inline-block;
-  padding-left: 5px;
-  width: 95%;
+  padding-left: 8px;
+  width: 92%;
 }
 label {
   display: inline-block;
-  width: 5%;
+  width: 8%;
 }
 </style>

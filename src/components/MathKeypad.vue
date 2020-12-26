@@ -11,7 +11,15 @@
     <span id="digit8" class="btn" @click="onWrite('8')"> 8 </span>
     <span id="digit9" class="btn" @click="onWrite('9')"> 9 </span>
     <span id="digit0" class="btn" @click="onWrite('0')"> 0 </span>
+  </div>
+  <div class="btn-group">
+    <span id="chara" class="btn" @click="onWrite('a')"> a </span>
+    <span id="charb" class="btn" @click="onWrite('b')"> b </span>
+    <span id="charc" class="btn" @click="onWrite('c')"> c </span>
+    <span id="charm" class="btn" @click="onWrite('m')"> m </span>
+    <span id="charn" class="btn" @click="onWrite('n')"> n </span>
     <span id="charx" class="btn" @click="onWrite('x')"> x </span>
+    <span id="comma" class="btn" @click="onWrite(',')"> , </span>
   </div>
   <div class="btn-group">
     <span id="plus" class="btn" @click="onWrite('+')"> + </span>
@@ -19,6 +27,7 @@
     <span id="mult" class="btn" @click="onCmd('\\cdot')"> * </span>
     <span id="divide" class="btn" @click="onFrac()"> / </span>
     <span id="divide" class="btn" @click="onWrite('=')"> = </span>
+    <span id="pm" class="btn" @click="onCmd('\\pm')"> &plusmn; </span>
     <span
       id="brackets()"
       class="btn"
