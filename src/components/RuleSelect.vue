@@ -1,7 +1,12 @@
 <template>
   <div v-if="isAdding">
-    <rule-add></rule-add>
+    <rule-add
+      :rules="rules"
+      @ruleadded="onRuleAdded"
+      @addcancelled="onAddCancelled"
+    ></rule-add>
   </div>
+  <div v-else-if="isEditing">isEditing</div>
   <div v-else>
     <div v-if="isSelected">
       <span id="selectedRule" @click="onSelect(selectedRule)">{{
@@ -11,7 +16,7 @@
       }}</span>
     </div>
     <div class="scrolldown" v-else>
-      <span>click a rule to select / Add for new rules</span>
+      <span>click a rule to select / Add to create / Edit to change</span>
       <span
         v-for="(optRule, index) in rules"
         :key="index"
@@ -37,6 +42,7 @@
       <button type="button" class="btn btn__primary" @click="isAdding = true">
         Add
       </button>
+      <button type="button" class="btn btn__primary">Edit</button>
       <button type="button" class="btn btn__primary" @click="onSave">
         Save
       </button>
@@ -48,7 +54,7 @@
 import RuleVarEditVue from "./RuleVarEdit.vue";
 import RuleAddVue from "./RuleAdd.vue";
 import rulesJSON from "/rules.json";
-let MQ = window.MQ;
+import { initRules, fillRule, mqifyRules } from "../libs/rule.js";
 export default {
   components: {
     RuleVarEdit: RuleVarEditVue,
@@ -62,15 +68,13 @@ export default {
   data() {
     return {
       selectedRule: this.rule,
+      rules: initRules(this.rule, rulesJSON),
       hasChanged: false,
       isSelected: false,
+      // isSelecting: true,
       isAdding: false,
+      isEditing: false,
     };
-  },
-  computed: {
-    rules() {
-      return initRules(this.rule, rulesJSON);
-    },
   },
   methods: {
     onVarEdited(varName, varValue) {
@@ -78,6 +82,13 @@ export default {
       this.selectedRule[varName] = varValue;
       // console.log("onVarEdited: ", this.selectedRule);
       this.hasChanged = true;
+    },
+    onRuleAdded(enlargedRules) {
+      this.rules = enlargedRules;
+      this.isAdding = false;
+    },
+    onAddCancelled() {
+      this.isAdding = false;
     },
     onSelect(selRule) {
       if (this.isSelected) {
@@ -114,48 +125,6 @@ export default {
     mqifyRules(this.rules, this.isSelected);
   },
 };
-// utilities ---------------------------------------------
-function initRules(initRule, arrRules) {
-  let arrInit = [];
-  arrInit.push(initRule);
-  arrInit = arrInit.concat(arrRules);
-  return compressRules(arrInit);
-}
-function compressRules(arrRules) {
-  arrRules.forEach((item, index, arr) => {
-    arr[index].left = item.left.replace(/\s+/g, "");
-    arr[index].right = item.right.replace(/\s+/g, "");
-  });
-  return arrRules;
-}
-function fillRule(selectedRule) {
-  //console.log("fillRule: ", selectedRule);
-  let filled = {};
-  filled.left = selectedRule.left;
-  filled.right = selectedRule.right;
-  let rx;
-  for (let v of selectedRule.vars) {
-    if (selectedRule[v]) {
-      //console.log("fillRule: ", v, ":", selectedRule[v]);
-      rx = new RegExp(v, "g");
-      filled.left = filled.left.replace(rx, selectedRule[v]);
-      filled.right = filled.right.replace(rx, selectedRule[v]);
-    }
-  }
-  selectedRule.filled = filled;
-  return selectedRule;
-}
-function mqifyRules(rules, isSelected) {
-  if (isSelected) {
-    MQ.StaticMath(document.getElementById("selectedRule"));
-  } else {
-    let ruleId = "";
-    for (let r = 0; r < rules.length; r++) {
-      ruleId = "rule_" + r;
-      MQ.StaticMath(document.getElementById(ruleId));
-    }
-  }
-}
 </script>
 
 <style scoped>

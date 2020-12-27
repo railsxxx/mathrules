@@ -1,11 +1,11 @@
 <template>
   <div id="newRule">
     {{
+      (rule.vars ? rule.vars : "vars") +
+      " : " +
       (rule.left ? rule.left : "left") +
       "&rarr;" +
-      (rule.right ? rule.right : "right") +
-      " : " +
-      (rule.vars ? rule.vars : "vars")
+      (rule.right ? rule.right : "right")
     }}
   </div>
   <br />
@@ -32,15 +32,20 @@
 
 <script>
 import RuleVarEditVue from "./RuleVarEdit.vue";
+import { addRule, downloadRules } from "../libs/rule.js";
 let MQ = window.MQ;
 export default {
   components: {
     RuleVarEdit: RuleVarEditVue,
   },
   emits: ["ruleadded", "addcancelled"],
+  props: {
+    rules: { type: Object, required: true },
+  },
   data() {
     return {
       rule: {},
+      enlargedRules: this.rules,
       hasChanged: false,
     };
   },
@@ -66,7 +71,9 @@ export default {
       if (!this.rule.vars) return;
       if (this.hasChanged) {
         this.hasChanged = false;
-        this.$emit("ruleadded", this.rule);
+        this.enlargedRules = addRule(this.rule, this.enlargedRules);
+        downloadRules(this.enlargedRules, "rules.json");
+        this.$emit("ruleadded", this.enlargedRules);
         this.gFocusMQobj.clear();
         this.gFocusMQref.value = {};
       }
