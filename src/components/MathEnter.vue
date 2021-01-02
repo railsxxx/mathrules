@@ -18,8 +18,8 @@ export default {
   emits: ["newmath"],
   data() {
     return {
-      init: "x^2",
-      input: "x^2",
+      init: "(a + 3)^2",
+      input: "(a + 3)^2",
     };
   },
   computed: {
