@@ -107,7 +107,7 @@ export default {
     },
   },
   watch: {
-    last: function (newVal, oldVal) {
+    last: function (newVal) {
       this.isLast = newVal;
     },
   },

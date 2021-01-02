@@ -75,7 +75,8 @@ export default {
       const toDoToUpdate = this.MathItems.find((item) => item.id === mathId);
       toDoToUpdate.done = !toDoToUpdate.done;
     },
-    deleteItem(mathId) {
+    //deleteItem(mathId) {
+    deleteItem() {
       this.MathItems.pop();
       setLast(this.MathItems);
       this.$refs.listSummary.focus();
