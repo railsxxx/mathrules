@@ -2,7 +2,7 @@
   <div id="newRule">
     {{
       (rule.vars ? rule.vars : "vars") +
-      " : " +
+      " :: " +
       (rule.left ? rule.left : "left") +
       "&rarr;" +
       (rule.right ? rule.right : "right")

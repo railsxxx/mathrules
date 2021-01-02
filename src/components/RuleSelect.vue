@@ -15,8 +15,8 @@
           : selectedRule.left + "&rarr;" + selectedRule.right
       }}</span>
     </div>
-    <div class="scrolldown" v-else>
-      <span>click a rule to select / Add to create / Edit to change</span>
+    <div v-else class="scrolldown">
+      <span>Click a rule to select / Add to create / Edit to change</span>
       <span
         v-for="(optRule, index) in rules"
         :key="index"
