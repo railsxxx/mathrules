@@ -53,7 +53,8 @@
 <script>
 import RuleVarEditVue from "./RuleVarEdit.vue";
 import RuleAddVue from "./RuleAdd.vue";
-import rulesJSON from "/rules.json";
+//import rulesJSON from "/rules.json";
+import rulesJSON from "../../public/rules.json";
 import { initRules, fillRule, mqifyRules } from "../libs/rule.js";
 export default {
   components: {
