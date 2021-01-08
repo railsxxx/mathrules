@@ -1,11 +1,13 @@
 <template>
   <span
+    v-if="isEditing"
     class="input__lg"
     id="enter-math-field"
     ref="editMathFieldRef"
-    @click="onClick"
+    @click="onEdit"
     >{{ init }}</span
   >
+  <span v-else class="input__lg" @click="onClick">{{ locale.enterMath }}</span>
   <button type="button" @click="onStart" class="btn btn__primary btn__lg">
     Start
   </button>
@@ -18,8 +20,10 @@ export default {
   emits: ["newmath"],
   data() {
     return {
-      init: "(a + 3)^2",
-      input: "(a + 3)^2",
+      init: "(a-3)^2",
+      input: "(a-3)^2",
+      isEditing: false,
+      locale: this.gLocale,
     };
   },
   computed: {
@@ -29,6 +33,9 @@ export default {
   },
   methods: {
     onClick() {
+      this.isEditing = true;
+    },
+    onEdit() {
       this.MQMathField.focus();
       this.gFocusMQobj.set(this.MQMathField);
       // console.log("onClick: gFocusMQobj: ", this.gFocusMQobj.get());
@@ -44,9 +51,10 @@ export default {
       this.input = "";
       this.gFocusMQobj.clear();
       this.gFocusMQref.value = {};
+      this.isEditing = false;
     },
   },
-  mounted() {
+  updated() {
     const inputOn = this.onInput;
     const enterOn = this.onStart;
     const editMathField = MQ.MathField(this.$refs.editMathFieldRef, {

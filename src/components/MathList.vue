@@ -1,5 +1,5 @@
 <template>
-  <h1>Math Rules</h1>
+  <math-header></math-header>
   <math-enter v-if="MathItems.length == 0" @newmath="newMath"></math-enter>
   <h2
     id="list-summary"
@@ -30,12 +30,14 @@
 </template>
 
 <script>
+import MathHeaderVue from "./MathHeader.vue";
 import MathItemVue from "./MathItem.vue";
 import MathEnterVue from "./MathEnter.vue";
 import MathKeypadVue from "./MathKeypad.vue";
 import uniqueId from "lodash.uniqueid";
 export default {
   components: {
+    MathHeader: MathHeaderVue,
     MathItem: MathItemVue,
     MathEnter: MathEnterVue,
     MathKeypad: MathKeypadVue,
@@ -67,7 +69,7 @@ export default {
       this.MathItems.push({
         id: uniqueId("item-"),
         label: math,
-        rule: { left: "selectRule", right: "" },
+        rule: { left: "", right: "" },
       });
       setLast(this.MathItems);
     },
@@ -75,8 +77,7 @@ export default {
       const toDoToUpdate = this.MathItems.find((item) => item.id === mathId);
       toDoToUpdate.done = !toDoToUpdate.done;
     },
-    //deleteItem(mathId) {
-    deleteItem() {
+    deleteItem(mathId) {
       this.MathItems.pop();
       setLast(this.MathItems);
       this.$refs.listSummary.focus();

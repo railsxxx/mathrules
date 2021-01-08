@@ -1,28 +1,25 @@
 <template>
   <div>
-    <p :id="staticMathId" @click="onStaticMathClick">{{ math }}</p>
+    <p :id="staticMathId">{{ math }}</p>
   </div>
   <div class="stack-small" v-if="!isEditing">
-    <div :id="editRule" class="checkbox-label">
-      {{
-        rule.filled
-          ? rule.filled.left + "&rarr;" + rule.filled.right
-          : rule.left + "&rarr;" + rule.right
-      }}
+    <div :id="editRule" class="checkbox-label" v-if="rule.filled">
+      {{ rule.filled ? rule.filled.left + " &rArr; " + rule.filled.right : "" }}
     </div>
+    <div v-else>{{ locale.selectRule }}</div>
     <div class="btn-group" v-if="isLast">
-      <button type="button" class="btn btn__danger" @click="deleteStep">
-        Delete
-      </button>
-      <button type="button" class="btn" @click="rewriteMath">Apply</button>
       <button
         type="button"
         class="btn"
         ref="editButton"
         @click="toggleToRuleSelect"
       >
-        Select
+        {{ locale.select }}
       </button>
+      <button type="button" class="btn btn__danger" @click="deleteStep">
+        {{ locale.delete }}
+      </button>
+      <button type="button" class="btn" @click="rewriteMath">Apply</button>
     </div>
   </div>
   <rule-select
@@ -54,6 +51,7 @@ export default {
       isLast: this.last,
       newMath: this.math,
       staticMathMQ: {},
+      locale: this.gLocale,
     };
   },
   computed: {
@@ -107,7 +105,7 @@ export default {
     },
   },
   watch: {
-    last: function (newVal) {
+    last: function (newVal, oldVal) {
       this.isLast = newVal;
     },
   },
@@ -255,3 +253,5 @@ p {
 }
 </style>
 
+
+    font-size: 1.9rem;
